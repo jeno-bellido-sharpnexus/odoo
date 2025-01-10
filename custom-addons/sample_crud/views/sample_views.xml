@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- List View (formerly Tree View) -->
+    <record id="view_sample_record_tree" model="ir.ui.view">
+        <field name="name">sample.record.list</field>
+        <field name="model">sample.record</field>
+        <field name="arch" type="xml">
+            <list delete="1">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="amount"/>
+                <field name="state"/>
+                <field name="is_active"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_sample_record_form" model="ir.ui.view">
+        <field name="name">sample.record.form</field>
+        <field name="model">sample.record</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_confirm" 
+                            string="Confirm" 
+                            type="object" 
+                            class="oe_highlight" 
+                            invisible="state != 'draft'"/>
+                    <button name="action_done" 
+                            string="Mark Done" 
+                            type="object" 
+                            class="oe_highlight" 
+                            invisible="state != 'confirmed'"/>
+                    <button name="action_reset" 
+                            string="Reset to Draft" 
+                            type="object" 
+                            invisible="state not in ('confirmed', 'done')"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="date"/>
+                            <field name="amount"/>
+                        </group>
+                        <group>
+                            <field name="is_active"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_sample_record_search" model="ir.ui.view">
+        <field name="name">sample.record.search</field>
+        <field name="model">sample.record</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="date"/>
+                <field name="state"/>
+                <filter string="Active" name="active" domain="[('is_active', '=', True)]"/>
+                <filter string="Inactive" name="inactive" domain="[('is_active', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_by_state" context="{'group_by': 'state'}"/>
+                    <filter string="Date" name="group_by_date" context="{'group_by': 'date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_sample_record" model="ir.actions.act_window">
+        <field name="name">Sample Records</field>
+        <field name="res_model">sample.record</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_sample_record_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first sample record!
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Items -->
+    <menuitem id="menu_sample_root" name="Sample CRUD" sequence="10"/>
+    <menuitem id="menu_sample_record" name="Sample Records" parent="menu_sample_root" action="action_sample_record" sequence="1"/>
+</odoo> 

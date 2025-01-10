@@ -1,0 +1,20 @@
+{
+    'name': 'Sample CRUD Operations',
+    'version': '1.0',
+    'category': 'Extra Tools',
+    'summary': 'Sample module demonstrating CRUD operations',
+    'sequence': 10,
+    'description': """This module demonstrates basic CRUD operations in Odoo""",
+    'author': 'Your Company',
+    'website': 'https://www.yourcompany.com',
+    'depends': ['base'],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/sample_views.xml',
+    ],
+    'demo': [],
+    'installable': True,
+    'application': True,
+    'auto_install': False,
+    'license': 'LGPL-3',
+} 
