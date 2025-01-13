@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- List View (formerly Tree View) -->
+    <!-- List View -->
     <record id="view_sample_record_tree" model="ir.ui.view">
         <field name="name">sample.record.list</field>
         <field name="model">sample.record</field>
         <field name="arch" type="xml">
-            <list delete="1">
+            <list>
+                <field name="icon"/>
                 <field name="name"/>
-                <field name="date"/>
-                <field name="amount"/>
-                <field name="state"/>
-                <field name="is_active"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="status"/>
+                <field name="rep_status"/>
+                <field name="territory"/>
             </list>
         </field>
     </record>
@@ -21,37 +23,39 @@
         <field name="model">sample.record</field>
         <field name="arch" type="xml">
             <form>
-                <header>
-                    <button name="action_confirm" 
-                            string="Confirm" 
-                            type="object" 
-                            class="oe_highlight" 
-                            invisible="state != 'draft'"/>
-                    <button name="action_done" 
-                            string="Mark Done" 
-                            type="object" 
-                            class="oe_highlight" 
-                            invisible="state != 'confirmed'"/>
-                    <button name="action_reset" 
-                            string="Reset to Draft" 
-                            type="object" 
-                            invisible="state not in ('confirmed', 'done')"/>
-                    <field name="state" widget="statusbar"/>
-                </header>
                 <sheet>
                     <group>
                         <group>
+                            <field name="icon"/>
                             <field name="name"/>
-                            <field name="date"/>
-                            <field name="amount"/>
+                            <field name="phone"/>
+                            <field name="email"/>
+                            <field name="status"/>
+                            <field name="address"/>
                         </group>
                         <group>
-                            <field name="is_active"/>
+                            <field name="rep_status"/>
+                            <field name="promo_ref"/>
+                            <field name="frequency"/>
+                            <field name="rolling_frequency"/>
+                            <field name="territory"/>
                         </group>
                     </group>
                     <notebook>
-                        <page string="Description">
-                            <field name="description"/>
+                        <page string="Additional Information">
+                            <group>
+                                <group>
+                                    <field name="fax"/>
+                                    <field name="site_id"/>
+                                </group>
+                                <group>
+                                    <field name="latitude"/>
+                                    <field name="longitude"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Notes">
+                            <field name="notes"/>
                         </page>
                     </notebook>
                 </sheet>
@@ -66,13 +70,15 @@
         <field name="arch" type="xml">
             <search>
                 <field name="name"/>
-                <field name="date"/>
-                <field name="state"/>
-                <filter string="Active" name="active" domain="[('is_active', '=', True)]"/>
-                <filter string="Inactive" name="inactive" domain="[('is_active', '=', False)]"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="territory"/>
+                <filter string="Active Reps" name="active_reps" domain="[('rep_status', '=', 'active')]"/>
+                <filter string="Live Promos" name="live_promos" domain="[('promo_ref', '=', 'live')]"/>
                 <group expand="0" string="Group By">
-                    <filter string="Status" name="group_by_state" context="{'group_by': 'state'}"/>
-                    <filter string="Date" name="group_by_date" context="{'group_by': 'date'}"/>
+                    <filter string="Status" name="group_by_status" context="{'group_by': 'status'}"/>
+                    <filter string="Territory" name="group_by_territory" context="{'group_by': 'territory'}"/>
+                    <filter string="Rep Status" name="group_by_rep_status" context="{'group_by': 'rep_status'}"/>
                 </group>
             </search>
         </field>

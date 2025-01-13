@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_site_tree" model="ir.ui.view">
+        <field name="name">site.site.tree</field>
+        <field name="model">site.site</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="icon" widget="char"/>
+                <field name="name"/>
+                <field name="address"/>
+                <field name="city"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="status"/>
+                <field name="contact_count"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_site_form" model="ir.ui.view">
+        <field name="name">site.site.form</field>
+        <field name="model">site.site</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="icon" widget="char" class="oe_inline"/> 
+                            <field name="name" class="oe_inline"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="address"/>
+                            <field name="city"/>
+                            <field name="phone"/>
+                        </group>
+                        <group>
+                            <field name="email"/>
+                            <field name="status"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Contacts">
+                            <field name="contact_ids" context="{'default_site_id': id}">
+                                <tree>
+                                    <field name="icon"/>
+                                    <field name="name"/>
+                                    <field name="phone"/>
+                                    <field name="email"/>
+                                    <field name="status"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_site_search" model="ir.ui.view">
+        <field name="name">site.site.search</field>
+        <field name="model">site.site</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="address"/>
+                <field name="city"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <filter string="Green Status" name="green_status" domain="[('status', '=', 'green')]"/>
+                <filter string="Yellow Status" name="yellow_status" domain="[('status', '=', 'yellow')]"/>
+                <filter string="Red Status" name="red_status" domain="[('status', '=', 'red')]"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_by_status" domain="[]" context="{'group_by': 'status'}"/>
+                    <filter string="City" name="group_by_city" domain="[]" context="{'group_by': 'city'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_site" model="ir.actions.act_window">
+        <field name="name">Sites</field>
+        <field name="res_model">site.site</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first site!
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Items -->
+    <menuitem id="menu_site_root" name="Sites" sequence="10"/>
+    <menuitem id="menu_site_master" name="Site Management" parent="menu_site_root" sequence="1"/>
+    <menuitem id="menu_site" name="Sites" parent="menu_site_master" action="action_site" sequence="1"/>
+</odoo> 
