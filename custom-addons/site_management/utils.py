@@ -2,9 +2,6 @@ from functools import wraps
 from odoo.http import Response, request
 
 def cors(methods=None):
-    if methods is None:
-        methods = ['GET', 'POST', 'OPTIONS']
-
     def decorator(f):
         @wraps(f)
         def wrapped(*args, **kwargs):
@@ -12,7 +9,7 @@ def cors(methods=None):
             if request.httprequest.method == 'OPTIONS':
                 headers = {
                     'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': ', '.join(methods),
+                    'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PATCH, DELETE',
                     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
                     'Access-Control-Allow-Credentials': 'true',
                     'Access-Control-Max-Age': '3600',
@@ -28,7 +25,7 @@ def cors(methods=None):
             # Add CORS headers to response
             headers = {
                 'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': ', '.join(methods),
+                'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PATCH, DELETE',
                 'Access-Control-Allow-Headers': 'Content-Type, Authorization',
                 'Access-Control-Allow-Credentials': 'true'
             }
